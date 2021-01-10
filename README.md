@@ -22,3 +22,10 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+*****************************************
+
+Add new Vue Component:
+npm install -g vue-generate-component
+
+vgc -s home
