@@ -37,63 +37,24 @@
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
 
-            <slot name="vcardtext"></slot>
-<!--            <v-card-text>-->
-<!--              <v-container>-->
-<!--                <v-row>-->
-<!--                  <v-col-->
-<!--                      cols="12"-->
-<!--                      sm="6"-->
-<!--                      md="4"-->
-<!--                  >-->
-<!--                    <v-text-field-->
-<!--                        v-model="editedItem.name"-->
-<!--                        label="Dessert name"-->
-<!--                    ></v-text-field>-->
-<!--                  </v-col>-->
-<!--                  <v-col-->
-<!--                      cols="12"-->
-<!--                      sm="6"-->
-<!--                      md="4"-->
-<!--                  >-->
-<!--                    <v-text-field-->
-<!--                        v-model="editedItem.calories"-->
-<!--                        label="Calories"-->
-<!--                    ></v-text-field>-->
-<!--                  </v-col>-->
-<!--                  <v-col-->
-<!--                      cols="12"-->
-<!--                      sm="6"-->
-<!--                      md="4"-->
-<!--                  >-->
-<!--                    <v-text-field-->
-<!--                        v-model="editedItem.fat"-->
-<!--                        label="Fat (g)"-->
-<!--                    ></v-text-field>-->
-<!--                  </v-col>-->
-<!--                  <v-col-->
-<!--                      cols="12"-->
-<!--                      sm="6"-->
-<!--                      md="4"-->
-<!--                  >-->
-<!--                    <v-text-field-->
-<!--                        v-model="editedItem.carbs"-->
-<!--                        label="Carbs (g)"-->
-<!--                    ></v-text-field>-->
-<!--                  </v-col>-->
-<!--                  <v-col-->
-<!--                      cols="12"-->
-<!--                      sm="6"-->
-<!--                      md="4"-->
-<!--                  >-->
-<!--                    <v-text-field-->
-<!--                        v-model="editedItem.protein"-->
-<!--                        label="Protein (g)"-->
-<!--                    ></v-text-field>-->
-<!--                  </v-col>-->
-<!--                </v-row>-->
-<!--              </v-container>-->
-<!--            </v-card-text>-->
+<!--            <slot name="vcardtext"></slot>-->
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col v-for="format in itemFormats"
+                         :key="format.model"
+                      :cols="format.cols"
+                      :sm="format.sm"
+                      :md="format.md"
+                  >
+                    <v-text-field
+                        v-model="editedItem[format.model]"
+                        :label="format.label"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -160,6 +121,7 @@ export default {
   props: {
     crudFormTitle: String,
     headers: Array,
+    itemFormats: Array,
     items: Array,
     sortBy: String,
     tableClass: String,
@@ -167,30 +129,16 @@ export default {
     defaultItemProp: Object
   },
   mounted() {
-    // this.editedItem = this.editedItemProp
-    // this.defaultItem = this.defaultItemProp
+    this.editedItem = this.editedItemProp
+    this.defaultItem = this.defaultItemProp
   },
   data: () => ({
     dialog: false,
     dialogDelete: false,
     editedIndex: -1,
-    itemBeforeEditing: {}
-    // editedItem: {},
-    // defaultItem: {}
-    // editedItem: {
-    //   name: '',
-    //   calories: 0,
-    //   fat: 0,
-    //   carbs: 0,
-    //   protein: 0,
-    // },
-    // defaultItem: {
-    //   name: '',
-    //   calories: 0,
-    //   fat: 0,
-    //   carbs: 0,
-    //   protein: 0,
-    // },
+    itemBeforeEditing: {},
+    editedItem: {},
+    defaultItem: {}
   }),
   computed: {
     formTitle() {
@@ -238,7 +186,6 @@ export default {
 
     close() {
       this.dialog = false
-      this.$emit('edited', this.itemBeforeEditing)
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
