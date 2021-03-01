@@ -37,7 +37,7 @@
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
 
-<!--            <slot name="vcardtext"></slot>-->
+<!--            Ovaj v-card-text je samo zapravo za Edit form ! -->
             <v-card-text>
               <v-container>
                 <v-row>
